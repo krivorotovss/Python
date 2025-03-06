@@ -215,7 +215,7 @@ def range_definition(prefix_number, number_suffix, general_list_middle_part_rang
         simple_range8(prefix_number, general_list_middle_part_range, number_suffix, range_start_diffirence, range_end_diffirence)
     elif number_suffix == 0:
         print(f"не удалось обработать диапазон - {prefix_number} {range_start_diffirence} {range_end_diffirence}")
-        list_numbers_ranges0.append(f"не удалось обработать диапазон - {prefix_number} {general_list_middle_part_range}{range_start_diffirence} - {general_list_middle_part_range}{range_end_diffirence}")
+        list_numbers_ranges0.append(f"не удалось обработать диапазон - {prefix_number} {''.join(map(str,general_list_middle_part_range))}{range_start_diffirence} - {''.join(map(str,general_list_middle_part_range))}{range_end_diffirence}")
     elif check_flag == True:
             range_method(prefix_number, general_list_middle_part_range, number_suffix, range_start_diffirence, range_end_diffirence)
     else:
