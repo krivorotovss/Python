@@ -1,3 +1,25 @@
+import pandas as pd
+
+# # Открываем файл
+# input_file_path = 'D:\\test\\output.csv'  # замените на ваш файл
+#
+# # Читаем CSV файл
+# data = pd.read_csv(input_file_path)
+#
+# # Преобразуем каждую строку в список и добавляем в общий список
+# result = data.values.tolist()
+#
+# # Выводим полученные данные
+# for row in result: # row - это строка из CSV в виде списка
+#     print(row)
+#     prefix = str(row[1])
+#     center_start = str(row[2])
+#     center_end = str(row[3])
+
+
+
+
+
 # Печатающий метод
 def write_in_file():
     pass
@@ -6,8 +28,13 @@ def write_in_file():
 def simple_range(prefix_number, result_list_middle_part_range, number_suffix, range_start_diffirence):
     suffix = f"{{{number_suffix}}}"
     middle_part_number = ''.join(result_list_middle_part_range) + ''.join(range_start_diffirence)[:-number_suffix]
-    result = f"7{prefix_number}{middle_part_number}.{suffix}"
-    print(f"7{prefix_number}{middle_part_number}.{suffix}")
+
+    if number_suffix != 0:
+        result = f"7{prefix_number}{middle_part_number}.{suffix}"
+    else:
+        result = f"7{prefix_number}{middle_part_number}"
+
+    print(result)
     list_numbers_ranges0.append(result)
 
 
@@ -174,6 +201,11 @@ def range_definition(prefix_number, number_suffix, general_list_middle_part_rang
     number_suffix = find_number_suffix(number_suffix, range_start_diffirence, range_end_diffirence)
     print(f"number_suffix = {number_suffix}")
 
+    if range_start_diffirence == "":
+        range_start_diffirence = "0"
+
+    if range_end_diffirence == "":
+        range_end_diffirence = "0"
 
     # Проверка есть ли в стартовом диапазоне столько же нулей свободных, сколько результат numbers_range (количество номеров в диапазоне)
     range_size = int(''.join(range_end_diffirence)) - int(''.join(range_start_diffirence)) + 1
@@ -398,7 +430,9 @@ def splitting_large_ranges(range_start_diffirence, range_end_diffirence, number_
         new_range_start_diffirence = range_start_diffirence
 
 
-        new_suffix = find_number_suffix(0, range_start_diffirence, range_end_diffirence) + 1
+        # new_suffix = find_number_suffix(0, range_start_diffirence, range_end_diffirence) + 1
+        # Подсчет количества порядков в числе номеров, пример 1000 - это 3 порядка
+        new_suffix = int(len(str(numbers_range))) - 1
 
         # Вычисляем новый суффикс для поддиапазона
         # new_suffix = len(str(int(numbers_range / 10)))
@@ -461,8 +495,8 @@ def splitting_large_ranges(range_start_diffirence, range_end_diffirence, number_
 
 # Обединение диапазонов
 def union_ranges(list_numbers_result, list_numbers_ranges, list_numbers_ranges0, list_numbers_ranges2, list_numbers_ranges3, list_numbers_ranges4, list_numbers_ranges5, list_numbers_ranges6, list_numbers_ranges7, list_numbers_ranges8, list_numbers_ranges9, list_numbers_ranges10):
-    dot_index = list_numbers_ranges0[0].find('.')
-    print(f"dot_index = {dot_index}")
+    # dot_index = list_numbers_ranges0[0].find('.')
+    # print(f"dot_index = {dot_index}")
 
     print("=================================================================================")
     print("=================================================================================")
@@ -471,6 +505,9 @@ def union_ranges(list_numbers_result, list_numbers_ranges, list_numbers_ranges0,
 
     index = 0
     while list_numbers_ranges0:
+        dot_index = list_numbers_ranges0[0].find('.')
+        print(f"dot_index = {dot_index}")
+
         list_numbers_ranges = []
         print(f"index = {index}")
         elems_list = list_numbers_ranges0[index]
@@ -482,6 +519,8 @@ def union_ranges(list_numbers_result, list_numbers_ranges, list_numbers_ranges0,
         max_digit = 0
         result_digits = 0
 
+
+        # TODO по идее попнуть нужно из старого списка, сразу после добавления в новый
         for j in range(list_size):
             # elems_list[-2:-1] - значение суффикса
             # elems_list[-6:-5] - это последний равный знак в нумерации, следующий будет у всех разный
@@ -523,9 +562,10 @@ def union_ranges(list_numbers_result, list_numbers_ranges, list_numbers_ranges0,
         # # print(f"{result_digits}[{min_digit}-{max_digit}].{list_numbers_ranges0[j][-2]}")
         # Итоговый вывод объединенного значения (сейчас нет учета размера суффикса, нужно искать положение точки)
         # print(f"{result_digits}[{min_digit}-{max_digit}].{{{list_numbers_ranges0[j][-2]}}}")
-        print(f"{result_digits}[{min_digit}-{max_digit}].{{{list_numbers_ranges0[j][dot_index + 2]}}}")
-        list_numbers_result.append(
-            f"{result_digits}[{min_digit}-{max_digit}].{{{list_numbers_ranges0[j][dot_index + 2]}}}")
+        # print(f"{result_digits}[{min_digit}-{max_digit}].{{{list_numbers_ranges0[j][dot_index + 2]}}}")
+        print(f"{result_digits}[{min_digit}-{max_digit}].{{{list_numbers_ranges[0][dot_index + 2]}}}")
+        print(f"list_numbers_ranges0[j][dot_index + 2] = {list_numbers_ranges[0][dot_index + 2]}")
+        list_numbers_result.append(f"{result_digits}[{min_digit}-{max_digit}].{{{list_numbers_ranges[0][dot_index + 2]}}}")
         print()
         # print(f"list_numbers_ranges = {list_numbers_ranges}")
         # print(f"list_numbers_ranges0 = {list_numbers_ranges0}")
@@ -650,10 +690,16 @@ def union_ranges(list_numbers_result, list_numbers_ranges, list_numbers_ranges0,
 # middle_part_start = 8471250
 # middle_part_end = 8471349
 
-# 939	9396800	9426799	30000	79399396[8-9].{2}, 7939939[7-9].{3}, 793994[0-1].{4}, 7939942[0-5].{3},  79399426[0-7].{2} TODO много строк в выде с мелкими диапазонами
-# prefix_number = 939
-# middle_part_start = 9396800
-# middle_part_end = 9426799
+# # 939	9396800	9426799	30000	79399396[8-9].{2}, 7939939[7-9].{3}, 793994[0-1].{4}, 7939942[0-5].{3},  79399426[0-7].{2} TODO много строк в выде с мелкими диапазонами
+prefix_number = 939             # TODO похоже сломалось
+middle_part_start = 9396800
+middle_part_end = 9426799
+
+
+# 923 800000 824999  25000   792308[0-1].{4}, 7923082[0-4].{3}
+# prefix_number = 923
+# middle_part_start = 800000
+# middle_part_end = 824999
 
 # 923	0	999	1000	79230000.{3} ОК
 # prefix_number = 923
@@ -685,17 +731,22 @@ def union_ranges(list_numbers_result, list_numbers_ranges, list_numbers_ranges0,
 
 # suffix = 0, решено
 # 958	936452	936499	48  TODO RecursionError: maximum recursion depth exceeded
-prefix_number = 958
-middle_part_start = 936452
-middle_part_end = 936499
+# prefix_number = 958
+# middle_part_start = 936452
+# middle_part_end = 936499
 
 
-# 958	936157	936157	1
-
+# 958	936157	936157	1    TODO падает все еще
+# prefix_number = 958
+# middle_part_start = 936157
+# middle_part_end = 936157
 
 
 
 print("===================================START================================================================")
+
+
+
 numbers_range = 0
 general_list_middle_part_range = 0
 end_range = middle_part_end
@@ -713,6 +764,7 @@ list_numbers_ranges7 = []
 list_numbers_ranges8 = []
 list_numbers_ranges9 = []
 list_numbers_ranges10 = []
+# ====================================================================================================
 
 # Считаем диапазоны
 suffix_calculation(prefix_number, middle_part_start, middle_part_end, general_list_middle_part_range)
@@ -766,103 +818,6 @@ if(len(list_numbers_ranges0) > 1):
 
     union_ranges(list_numbers_result, list_numbers_ranges, list_numbers_ranges0, list_numbers_ranges2, list_numbers_ranges3, list_numbers_ranges4, list_numbers_ranges5, list_numbers_ranges6, list_numbers_ranges7, list_numbers_ranges8, list_numbers_ranges9, list_numbers_ranges10)
 
-#     dot_index = list_numbers_ranges0[0].find('.')
-#     print(f"dot_index = {dot_index}")
-#
-#     print("=================================================================================")
-#     print("=================================================================================")
-#     print("=================================================================================")
-#     print("=================================================================================")
-#
-#     index = 0
-#     while list_numbers_ranges0:
-#         list_numbers_ranges = []
-#         print(f"index = {index}")
-#         elems_list = list_numbers_ranges0[index]
-#         list_indexes = []
-#         # print(f"elems_list = {elems_list}")
-#
-#         list_size = len(list_numbers_ranges0)
-#         min_digit = 9
-#         max_digit = 0
-#         result_digits = 0
-#
-#         for j in range(list_size):
-#             # elems_list[-2:-1] - значение суффикса
-#             # elems_list[-6:-5] - это последний равный знак в нумерации, следующий будет у всех разный
-#             # elems_list[-5:-4] - это следующий знак, который различается, следующая будет точка
-#             # Зная положение точки, мы знаем фикс позиции относительно нее
-#             # dot_index + 2 - это суффикс
-#             # [dot_index - 1 : dot_index - 0] - это изменяемое значение для мин и макс диапазона
-#             # dot_index - 2 - это последнее значение в равной части
-#             # if elems_list[-2:-1] == list_numbers_ranges0[j][-2:-1] and elems_list[-6:-5] == list_numbers_ranges0[j][-6:-5]:
-#             if elems_list[dot_index + 1:dot_index + 2] == list_numbers_ranges0[j][dot_index + 1:dot_index + 2] and elems_list[dot_index -2: dot_index -1] == list_numbers_ranges0[j][dot_index -2: dot_index -1]:
-#                 list_numbers_ranges.append(list_numbers_ranges0[j])
-#                 # Составить список индексов совпавших элементов, чтобы потом их удалить из списка, после цикла
-#                 list_indexes.append(j)
-#
-#                 # Нужно найти мин и макс значения [min - max] - elems_list[-5:-4]
-#                 # print(f"list_numbers_ranges[j] = {list_numbers_ranges[j]}")
-#                 # print(f"list_numbers_ranges[j][-5:-4] = {list_numbers_ranges[j][-5:-4]}")
-#
-#                 # if int(''.join(map(str, list_numbers_ranges[j][-5:-4]))) > max_digit:
-#                 #     max_digit = int(''.join(map(str, list_numbers_ranges[j][-5])))
-#
-#                 print(f"digit = {int(''.join(map(str, list_numbers_ranges[j][dot_index - 1 : dot_index - 0])))}")
-#                 # TODO косяк тут
-#                 if int(''.join(map(str, list_numbers_ranges[j][dot_index - 1 : dot_index - 0]))) > max_digit:
-#                     max_digit = int(''.join(map(str, list_numbers_ranges[j][dot_index - 1])))
-#
-#                 # if int(''.join(map(str, list_numbers_ranges[j][-5:-4]))) < min_digit:
-#                 #     min_digit = int(''.join(map(str, list_numbers_ranges[j][-5])))
-#                 if int(''.join(map(str, list_numbers_ranges[j][dot_index - 1 : dot_index - 0]))) < min_digit:
-#                     min_digit = int(''.join(map(str, list_numbers_ranges[j][dot_index - 1])))
-#
-#                 # result_digits = list_numbers_ranges[j][:7]
-#                 result_digits = list_numbers_ranges[j][:dot_index - 1]
-#
-#         print()
-#         # # print(f"{result_digits}[{min_digit}-{max_digit}].{list_numbers_ranges0[j][-2]}")
-#         # Итоговый вывод объединенного значения (сейчас нет учета размера суффикса, нужно искать положение точки)
-#         # print(f"{result_digits}[{min_digit}-{max_digit}].{{{list_numbers_ranges0[j][-2]}}}")
-#         print(f"{result_digits}[{min_digit}-{max_digit}].{{{list_numbers_ranges0[j][dot_index + 2]}}}")
-#         list_numbers_result.append(f"{result_digits}[{min_digit}-{max_digit}].{{{list_numbers_ranges0[j][dot_index + 2]}}}")
-#         print()
-#         # print(f"list_numbers_ranges = {list_numbers_ranges}")
-#         # print(f"list_numbers_ranges0 = {list_numbers_ranges0}")
-#         # print(f"list_indexes = {list_indexes}")
-#
-#
-#
-#         # Удаление уже обработанных значений из list_numbers_ranges
-#         index_k = 0
-#         for k in range(len(list_numbers_ranges)):
-#             # print(f"k = {k}")
-#             # print(f"index_k = {index_k}")
-#             # print(f"list_indexes[k] = {list_indexes[k]}")
-#             # print(type(list_indexes[k]))
-#
-#
-#             # print("pop")
-#             # print(f"list_indexes[k] - index_k = {list_indexes[k] + index_k}")
-#             # # Тк индекс_к - отрицательное число, то знак "+"
-#             # print(list_numbers_ranges0.pop(int(list_indexes[k]) + index_k))
-#             list_numbers_ranges0.pop(int(list_indexes[k]) + index_k)
-#             # print("===========================================")
-#             # print()
-#             list_size -= 1
-#             index_k -= 1
-#
-#
-#         # сохранить совпавшие элементы в новый список и можно сразу их обработать, соединить в диапазон (list_numbers_ranges)
-#
-#
-#         index += 1
-#
-#     print(f"list_numbers_ranges = {list_numbers_ranges}")
-#     print(f"list_numbers_ranges0 = {list_numbers_ranges0}")
-#
-# Получение итога
 print()
 print("===================================RESULT=============================================================")
 
