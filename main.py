@@ -430,9 +430,13 @@ def splitting_large_ranges(range_start_diffirence, range_end_diffirence, number_
         new_range_start_diffirence = range_start_diffirence
 
 
-        # new_suffix = find_number_suffix(0, range_start_diffirence, range_end_diffirence) + 1
+        new_suffix = find_number_suffix(0, range_start_diffirence, range_end_diffirence) + 1
         # Подсчет количества порядков в числе номеров, пример 1000 - это 3 порядка
-        new_suffix = int(len(str(numbers_range))) - 1
+        new_suffix1 = int(len(str(numbers_range))) - 1
+
+        # Нужно для компенсации одного или другого суффикса
+        if new_suffix > new_suffix1:
+            new_suffix = new_suffix1
 
         # Вычисляем новый суффикс для поддиапазона
         # new_suffix = len(str(int(numbers_range / 10)))
@@ -686,17 +690,17 @@ def union_ranges(list_numbers_result, list_numbers_ranges, list_numbers_ranges0,
 # middle_part_end = 5418519
 
 # 958	8471250	8471349	100	795884712[5-9].{1}, 795884713[0-4].{1} OK
-# prefix_number = 958
-# middle_part_start = 8471250
-# middle_part_end = 8471349
+prefix_number = 958
+middle_part_start = 8471250
+middle_part_end = 8471349
 
 # # 939	9396800	9426799	30000	79399396[8-9].{2}, 7939939[7-9].{3}, 793994[0-1].{4}, 7939942[0-5].{3},  79399426[0-7].{2} TODO много строк в выде с мелкими диапазонами
-prefix_number = 939             # TODO похоже сломалось
-middle_part_start = 9396800
-middle_part_end = 9426799
+# prefix_number = 939             # TODO похоже сломалось 7939939[6-9].{2} вместо 79399396[8-9].{2}
+# middle_part_start = 9396800
+# middle_part_end = 9426799
 
 
-# 923 800000 824999  25000   792308[0-1].{4}, 7923082[0-4].{3}
+# 923 800000 824999  25000   792308[0-1].{4}, 7923082[0-4].{3} OK
 # prefix_number = 923
 # middle_part_start = 800000
 # middle_part_end = 824999
